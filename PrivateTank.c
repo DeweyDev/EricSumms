@@ -1,7 +1,7 @@
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  none,     none)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Motor,  mtr_S1_C1_1,     motorD,        tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorTetrix, openLoop, reversed)
+#pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S1_C2_1,    servo1,               tServoStandard)
 #pragma config(Servo,  srvo_S1_C2_2,    servo2,               tServoStandard)
 #pragma config(Servo,  srvo_S1_C2_3,    servo3,               tServoNone)
@@ -33,51 +33,51 @@ task main()
 {
   while(true)                            // Infinite loop:
   {
-    getJoystickSettings(joystick);
+    //Get the jostick settings
 
-    motor[motorE] = joystick.joy1_y2 * -1;
-    // Motor D is assigned a power level equal to the right analog stick's Y-axis reading.
-    motor[motorD] = joystick.joy1_y1 ;        	  // Motor E is assigned a power level equal to the left analog stick's Y-axis reading.
+  	getJoystickSettings(joystick);
 
-if(joy1Btn(1) == 1)                  // If Joy1-Button1 is pressed:
-    {
-      motor[motorA] = 100;              // Turn Motor A On at full power
-    }
-    else                            // If Joy1-Button1 is NOT pressed:
-    {
-     motor[motorA] = 0;                 // Turn Motor A Off
-    }
- 
+    //Makes the main frame of arm move up and down
 
- if(joy1Btn(5) != 0){
+  	long reducetheshit = 60;
+
+  	motor[motorE] = joystick.joy1_y2 ;
+
+  	//This code sets up the left joystick to move teh robot front and back.
+
+    motor[motorD] = joystick.joy1_y1 ;        	  '
+
+
+
+/* Control the main driving mechanism thingy */
+
+if(joy1Btn(7) != 0){
  int a = ServoValue [servo1];
  servoChangeRate[servo1] = 10;
  servoTarget(servo1) = a+5;
 
-
-
  }
- if(joy1Btn(7) != 0){
+ if(joy1Btn(5) != 0){
  int b = ServoValue [servo1];
  servoChangeRate[servo1] = 10;
   servoTarget(servo1) = b-5;
 }
 
- if(joy1Btn(4) != 0){
- int c = ServoValue [servo2];
- servoChangeRate[servo2] = 10;
-  servoTarget(servo2) = c+5;
-
-
-
 }
- if(joy1Btn(6) != 0){
+
+/* Control the top part of arm */
+
+ if(joy1Btn(5) != 0){
  int d = ServoValue [servo2];
  servoChangeRate[servo2] = 10;
-  servoTarget(servo2) = d-5;
+  servoTarget(servo2) = d+5;
 
-
+}
+ if(joy1Btn(7) != 0){
+ int k = ServoValue [servo2];
+ servoChangeRate[servo2] = 10;
+  servoTarget(servo2) = k-5;
 
 }
 
-}}
+}
