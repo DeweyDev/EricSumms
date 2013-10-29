@@ -6,7 +6,8 @@ stuff, and what to do if something goes wrong.
 
 WHAT IS ERICSUMMS?
 
-  This is a library full of useful reusbale robotics programmign components meant for use with the RobotC compiler.
+  This is a library full of useful reusbale robotics programmign components 
+  meant for use with the RobotC compiler.
 
   It is distributed under the GNU General Public License - see the
   accompanying COPYING file for more details. 
