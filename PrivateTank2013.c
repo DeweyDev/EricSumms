@@ -1,10 +1,12 @@
-
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  none,     none)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
-#pragma config(Motor,  mtr_S1_C1_1,     motorLeft,     tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C1_2,     motorRight,    tmotorTetrix, openLoop, reversed)
-#pragma config(Servo,  srvo_S1_C2_1,    servo1,               tServoContinuousRotation)
-#pragma config(Servo,  srvo_S1_C2_2,    servo2,               tServoNone)
+#pragma config(Motor,  motorA,          lift,          tmotorNXT, openLoop, encoder)
+#pragma config(Motor,  motorB,          lift2,         tmotorNXT, openLoop, encoder)
+#pragma config(Motor,  motorC,          lift3,         tmotorNXT, openLoop, encoder)
+#pragma config(Motor,  mtr_S1_C1_1,     motorLeft,     tmotorTetrix, openLoop, reversed)
+#pragma config(Motor,  mtr_S1_C1_2,     motorRight,    tmotorTetrix, openLoop)
+#pragma config(Servo,  srvo_S1_C2_1,    rotator,              tServoContinuousRotation)
+#pragma config(Servo,  srvo_S1_C2_2,    table,                tServoStandard)
 #pragma config(Servo,  srvo_S1_C2_3,    servo3,               tServoNone)
 #pragma config(Servo,  srvo_S1_C2_4,    servo4,               tServoNone)
 #pragma config(Servo,  srvo_S1_C2_5,    servo5,               tServoNone)
@@ -14,14 +16,39 @@
 #include "JoystickDriver.c"
 
 
-task main()
+task main(){
 
-{
-getJoystickSettings(joystick);	
-while(1==1){
-		
-	motor[motorLeft] = joystick.joy1_y1;
-	motor[motorRight] = joystick.joy1_2;
+	while(1==1){
+		getJoystickSettings(joystick);
 
-}
+		motor[motorLeft] = joystick.joy1_y1;
+		motor[motorRight] = joystick.joy1_y2;
+
+		if(joy1Btn(5) == 1){
+			servo[rotator] = 127;
+		}
+		else{
+			servo[rotator] = 40;
+		}
+		if(joystick.joy1_TopHat == 0){
+			motor[lift] = motor[lift2] = motor[lift3] = 100;
+		}
+		if(joystick.joy1_TopHat == -1){
+			motor[lift] = motor[lift2] = motor[lift3] = 0;
+		}
+		if(joystick.joy1_TopHat == 4){
+			motor[lift] = motor[lift2] = motor[lift3] = -100;
+		}
+
+		// Control the collecting plate.
+		if(joy1Btn(1) == 1){
+			servo[table] = 129;
+		}
+		if(joy1Btn(2) == 1){
+			servo[table] = 94;
+		}
+		if(joy1Btn(3) == 1){
+			servo[table] = 0;
+		}
+	}
 }
